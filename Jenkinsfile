@@ -1,5 +1,5 @@
 pipeline {
-    agent { lebel "jenkins-slave"} #jenkins slave lable name
+    agent { lebel "Jenkins-slave"} #jenkins slave lable name
 
     environments{
         AWS_Access_Key_ID = credentials('aws_access')
