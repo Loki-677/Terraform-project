@@ -13,7 +13,7 @@ pipeline {
     stage {
         stage("checkout") {
             steps {
-                github url 'https://github.com/Loki-677/Terraform-project.git', branch: "${env.CHANGE_BRANCH ?: 'main'}"
+                git url 'https://github.com/Loki-677/Terraform-project.git', branch: env.CHANGE_BRANCH ?: 'main'
             }
         }
 
