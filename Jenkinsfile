@@ -1,47 +1,44 @@
 pipeline {
-    agent { label "Jenkins-slave"} //jenkins slave lable name
+  agent { label 'Jenkins-slave' } // Jenkins slave label name
 
-    environments{
-        AWS_Access_Key_ID = credentials('aws_access')
-        AWS_Secret_Access_Key = credentials('aws-secret')
-        Github_tocken = credentials('github-token')
+  environment {
+    AWS_ACCESS_KEY_ID     = credentials('aws_access')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret')
+    GITHUB_TOKEN          = credentials('github-token')
+  }
+
+  triggers {
+    githubPullRequest() // For GitHub pull request triggers
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git url: 'https://github.com/Loki-677/Terraform-project.git', branch: env.CHANGE_BRANCH ?: 'main'
+      }
     }
-
-    triggers{
-        githubPullRequest() //for github pull request
+    stage('Terraform Init') {
+      steps {
+        sh 'terraform init'
+      }
     }
-    stage {
-        stage("checkout") {
-            steps {
-                git url 'https://github.com/Loki-677/Terraform-project.git', branch: env.CHANGE_BRANCH ?: 'main'
-            }
-        }
-
-        stage ("Terraform Init"){
-                steps{
-                    sh "terraform init" 
-                    }
-                }
-        stage('Terraform Validate') {
-            steps {
-                sh 'terraform validate'
-                }
-            }
-        
-        stage ("Terraform Plan"){
-            steps{
-                sh "terraform plan -input=false" 
-            }
-        }
-        stage ("Terraform Apply"){
-            when {
-        branch 'main'  // Only apply on main branch merges
-            }
-
-            steps{
-                sh "terraform apply -auto-approve" 
-            }
-        }
-
+    stage('Terraform Validate') {
+      steps {
+        sh 'terraform validate'
+      }
     }
+    stage('Terraform Plan') {
+      steps {
+        sh 'terraform plan -input=false'
+      }
+    }
+    stage('Terraform Apply') {
+      when {
+        branch 'main' // Only apply on main branch merges
+      }
+      steps {
+        sh 'terraform apply -auto-approve'
+      }
+    }
+  }
 }
