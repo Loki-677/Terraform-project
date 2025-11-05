@@ -1,3 +1,0 @@
-i Hi i am from feature branch
-new content
-i am new content
