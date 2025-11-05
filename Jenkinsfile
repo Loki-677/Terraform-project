@@ -7,10 +7,6 @@ pipeline {
     GITHUB_TOKEN          = credentials('github-token')
   }
 
-  triggers {
-    githubPullRequest() // For GitHub pull request triggers
-  }
-
   stages {
     stage('Checkout') {
       steps {
