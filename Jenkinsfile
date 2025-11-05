@@ -8,7 +8,7 @@ pipeline {
     }
 
     triggers{
-        githubPullRequest() #for github pull request
+        githubPullRequest() //for github pull request
     }
     stage {
         stage("checkout") {
