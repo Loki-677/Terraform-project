@@ -25,7 +25,7 @@ pipeline {
     }
     stage('Terraform Plan') {
       steps {
-        sh 'terraform plan -input=false'
+        sh 'terraform plan -input=false -var-file='terraform.tfvars'
       }
     }
     stage('Terraform Apply') {
